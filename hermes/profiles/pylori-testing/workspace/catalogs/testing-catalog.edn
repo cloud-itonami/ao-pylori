@@ -1,0 +1,7 @@
+;; testing-catalog.edn - pylori-pylori-testing catalog
+;; diagnostic test entries: specimen, method, performance claims (each with quote and source), algorithm placement, QC notes
+;; Schema per entry: {:entry/id ... :entry/claim ... :entry/sources [{:source/id ... :quote ... :retrieved ...}]
+;; :entry/status :proposed|:verified|:rejected :entry/updated <iso-date>}
+;; Entries start empty on purpose: nothing is claimed without a quoted source.
+{:catalog/for "pylori-testing"
+ :catalog/entries []}

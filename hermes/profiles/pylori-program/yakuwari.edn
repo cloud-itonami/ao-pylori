@@ -1,0 +1,31 @@
+;; yakuwari.edn - authority table for pylori-pylori-program
+;; Authority of record for what this bot may do. SOUL.md points here; keep both in sync.
+;; Unlisted capabilities are blocked. ASCII only (validator requirement).
+{:yakuwari/id :pylori-program
+ :yakuwari/project "cloud-itonami/ao-pylori"
+ :yakuwari/objective "Coordinate the global H. pylori control programme: measure programme state across formulary, pharmacy, distribution and testing and file one gap finding per tick, propose-only."
+ :yakuwari/scale {:min 1 :desired 1 :max 2}
+ :yakuwari/runners [{:runner :claude :weight 1}]
+ :yakuwari/capabilities
+ [{:capability :read-public-sources :decision :autonomous
+   :note "read public guidelines and open data with recorded quotes and URLs"}
+  {:capability :write-own-workspace :decision :autonomous
+   :note "append to own catalogs, sources.edn, proposals and ledger only"}
+  {:capability :measure-via-script :decision :autonomous
+   :note "run own scripts/pylori_program_evidence.py via terminal; script output is the measurement of record"}
+  {:capability :git-branch-and-pr :decision :propose
+   :note "bot/pylori-program branch and PR to cloud-itonami/ao-pylori; merge is a human or gate decision"}
+  {:capability :merge :decision :blocked :note "never merge"}
+  {:capability :push-main :decision :blocked :note "never push main"}
+  {:capability :prescribe-or-dispense :decision :blocked
+   :note "medical acts are licensed human work"}
+  {:capability :diagnose-or-order-test :decision :blocked
+   :note "diagnosis and test ordering are licensed human work"}
+  {:capability :manufacture-or-distribute-goods :decision :blocked
+   :note "physical manufacture, stocking and shipping are licensed human work"}
+  {:capability :handle-patient-data :decision :blocked
+   :note "no patient-identifiable data"}
+  {:capability :contact-patients-or-providers :decision :blocked
+   :note "no outbound contact with patients or healthcare providers"}
+  {:capability :purchase-or-payment :decision :blocked
+   :note "no buying, selling, transfer or payment"}]}

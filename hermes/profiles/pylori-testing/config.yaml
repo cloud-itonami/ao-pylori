@@ -1,0 +1,222 @@
+model:
+  provider: openrouter
+  base_url: https://openrouter.ai/api/v1
+  default: xiaomi/mimo-v2.6-pro
+  max_tokens: 65536
+  context_length: 1050000
+providers:
+  murakumo:
+    base_url: https://api.murakumo.cloud/v1
+    api_mode: chat_completions
+    models:
+      mishima:
+        context_length: 131072
+        max_tokens: 1024
+      nex-n2.5-mini-uncensored:
+        context_length: 65536
+        max_tokens: 8192
+    stale_timeout_seconds: 600
+    request_timeout_seconds: 900
+    extra_headers:
+      HTTP-Referer: https://itonami.cloud
+      X-OpenRouter-Title: Itonami By KotobaLabs
+      X-Title: Itonami By KotobaLabs
+  openrouter-free:
+    base_url: https://openrouter.ai/api/v1
+    api_mode: chat_completions
+    key_env: OPENROUTER_API_KEY
+    stale_timeout_seconds: 600
+    extra_headers:
+      HTTP-Referer: https://itonami.cloud
+      X-OpenRouter-Title: Itonami By KotobaLabs
+      X-Title: Itonami By KotobaLabs
+  custom:
+    models:
+      glm-5.3-flash-cybersecurity-w4a16:
+        stale_timeout_seconds: 2400
+        timeout_seconds: 2400
+      qwen3.8-flash-next-cybersecurity-nvfp4:
+        stale_timeout_seconds: 2000
+        timeout_seconds: 2000
+  kotoba:
+    base_url: https://api.kotoba.cloud/v1
+    api_mode: chat_completions
+    key_env: KOTOBA_API_TOKEN
+    stale_timeout_seconds: 600
+    request_timeout_seconds: 900
+    models:
+      qwen3.8-27b-whitehacker:
+        context_length: 262144
+      qwen3.8-flash-next-whitehacker:
+        context_length: 131072
+fallback_providers:
+  - provider: openrouter-free
+    model: z-ai/glm-5.3-flash
+    base_url: https://openrouter.ai/api/v1
+web:
+  backend: nous
+browser:
+  cloud_provider: nous
+context_file_max_chars: 120000
+auxiliary:
+  free_only: false
+  vision:
+    provider: openrouter
+    base_url: https://api.kotoba.cloud/v1
+    key_env: KOTOBA_API_TOKEN
+    model: xiaomi/mimo-v2.6-flash
+    reasoning_effort: none
+  web_extract:
+    base_url: https://api.kotoba.cloud/v1
+    model: xiaomi/mimo-v2.6-flash
+    provider: openrouter
+  compression:
+    base_url: https://api.kotoba.cloud/v1
+    model: xiaomi/mimo-v2.6-pro
+    provider: openrouter
+    reasoning_effort: none
+    context_length: 1048576
+  skills_hub:
+    base_url: https://api.kotoba.cloud/v1
+    model: xiaomi/mimo-v2.6-flash
+    provider: openrouter
+  approval:
+    base_url: https://api.kotoba.cloud/v1
+    model: xiaomi/mimo-v2.6-flash
+    provider: openrouter
+  mcp:
+    base_url: https://api.kotoba.cloud/v1
+    model: xiaomi/mimo-v2.6-flash
+    provider: openrouter
+  title_generation:
+    base_url: https://api.kotoba.cloud/v1
+    model: xiaomi/mimo-v2.6-flash
+    provider: openrouter
+    reasoning_effort: none
+  triage_specifier:
+    base_url: https://api.kotoba.cloud/v1
+    model: xiaomi/mimo-v2.6-flash
+    provider: openrouter
+  openrouter_model: xiaomi/mimo-v2.6-pro
+dashboard:
+  turn_isolation: true
+tts:
+  provider: nous
+wake_word:
+  enabled: false
+moa:
+  presets:
+    default:
+      reference_models:
+        - provider: kotoba
+          model: qwen3.8-27b-whitehacker
+          enabled: true
+      aggregator:
+        provider: opencode-free
+        model: deepseek-v4-flash-free
+      degraded_reference_policy: loud
+      fanout: user_turn
+      enabled: false
+  reference_models:
+    - provider: kotoba
+      model: qwen3.8-27b-whitehacker
+      enabled: true
+  aggregator:
+    provider: opencode-free
+    model: deepseek-v4-flash-free
+  degraded_reference_policy: loud
+  max_tokens: 4096
+  fanout: user_turn
+  enabled: false
+skills:
+  trusted_project_dirs:
+    - /Users/junkawasaki/github/com-junkawasaki/root
+command_allowlist:
+  - shell execution via heredoc
+  - recursive delete
+  - overwrite project env/config via redirection
+  - delete in root path
+  - overwrite project env/config file
+  - overwrite system file via redirection
+  - script execution via heredoc
+  - script execution via -e/-c flag
+  - stop/restart hermes gateway (kills running agents)
+  - git force push (rewrites remote history)
+  - command parser limit or malformed executable payload
+plugins:
+  enabled: []
+gateway:
+  cron_only: true
+  multiplex_profiles: true
+secrets:
+  command:
+    enabled: true
+    command: printf 'OPENROUTER_API_KEY=%s\n' "$(security find-generic-password -s gftd.openrouter -w)"
+    helper_timeout_seconds: 10
+    override_existing: true
+_config_version: 51
+image_gen:
+  provider: nous
+onboarding:
+  seen:
+    tool_progress_prompt: true
+    busy_input_prompt: true
+agent:
+  max_turns: 500
+  run_budget_seconds: 1800
+
+# ── Security ──────────────────────────────────────────────────────────
+# Secret redaction is ON by default — strings that look like API keys,
+# tokens, and passwords are masked in tool output, logs, and chat
+# responses before the model or user ever sees them. Set redact_secrets
+# to false to disable (e.g. when developing the redactor itself).
+# tirith pre-exec scanning is enabled by default when the tirith binary
+# is available. Configure via security.tirith_* keys or env vars
+# (TIRITH_ENABLED, TIRITH_BIN, TIRITH_TIMEOUT, TIRITH_FAIL_OPEN).
+#
+# security:
+#   redact_secrets: true
+#   tirith_enabled: true
+#   tirith_path: "tirith"
+#   tirith_timeout: 5
+#   tirith_fail_open: true
+
+# ── Fallback Model ────────────────────────────────────────────────────
+# Automatic provider failover when primary is unavailable.
+# Uncomment and configure to enable. Triggers on rate limits (429),
+# overload (529), service errors (503), or connection failures.
+#
+# Supported providers:
+#   openrouter   (OPENROUTER_API_KEY)  — routes to any model
+#   openai-codex (OAuth — hermes auth) — OpenAI Codex
+#   nous         (OAuth — hermes auth) — Nous Portal
+#   zai          (ZAI_API_KEY)         — Z.AI / GLM
+#   kimi-coding  (KIMI_API_KEY)        — Kimi / Moonshot
+#   kimi-coding-cn (KIMI_CN_API_KEY)   — Kimi / Moonshot (China)
+#   minimax      (MINIMAX_API_KEY)     — MiniMax
+#   minimax-cn   (MINIMAX_CN_API_KEY)  — MiniMax (China)
+#   bedrock      (AWS IAM / boto3)     — AWS Bedrock (Converse API)
+#
+# For custom OpenAI-compatible endpoints, add base_url and key_env.
+#
+# fallback_model:
+#   provider: openrouter
+#   model: anthropic/claude-sonnet-4
+
+cron:
+  max_parallel_jobs: 12
+terminal:
+  backend: local
+  cwd: /Users/junkawasaki/.hermes/profiles/pylori-testing/workspace
+mcp_servers:
+  github-forest:
+    command: /opt/homebrew/bin/node
+    args:
+      - /Users/junkawasaki/github/com-junkawasaki/west-manifest/scripts/forest-maintenance.mjs
+      - mcp
+    lazy: true
+provider_routing:
+  models:
+    xiaomi/mimo-v2.6-pro:
+      only:
+        - xiaomi

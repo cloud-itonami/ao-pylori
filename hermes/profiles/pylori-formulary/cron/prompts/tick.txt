@@ -1,0 +1,5 @@
+SOUL.md を読め。scripts/pylori_formulary_evidence.py を terminal で 1 回実行し MEASURE 行を読む。
+workspace/ledger.jsonl の前回行との差から 1 finding を決め、公開一次資料を 1 件だけ読み
+quote + URL + retrieved 日付を sources.edn に記録してカタログに 1 エントリを追加するか
+workspace/proposals/ に提案を 1 件書く。25 API call 以内で短く報告して終了。
+処方・診断・調剤・購入・患者データは禁止（yakuwari.edn の :blocked を守る）。

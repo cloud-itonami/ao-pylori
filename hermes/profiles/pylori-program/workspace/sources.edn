@@ -1,0 +1,25 @@
+;; workspace/sources.edn - source ledger for pylori-pylori-program
+;; Rules: a claim may cite a source only after url is verified and a quote plus
+;; :retrieved date are recorded. :url :unverified means UNVERIFIED, not valid.
+[{:source/id :acg-2024-h-pylori
+  :title "ACG Clinical Guideline: Helicobacter pylori Infection"
+  :publisher "American College of Gastroenterology"
+  :year 2024
+  :url :unverified
+  :note "verify official URL before any citation; record quote and retrieved date"}
+ {:source/id :maastricht-vi-2022
+  :title "The Maastricht VI/Florence consensus report: Management of Helicobacter pylori infection"
+  :publisher "Gut"
+  :year 2022
+  :url :unverified
+  :note "verify official URL before any citation; record quote and retrieved date"}
+ {:source/id :who-gastric-cancer-fact
+  :title "WHO gastric cancer fact sheet"
+  :publisher "World Health Organization"
+  :url :unverified
+  :note "verify official URL before any citation; record quote and retrieved date"}
+ {:source/id :jgha-h-pylori-5th
+  :title "Diagnosis and treatment of Helicobacter pylori infection, Japanese guideline 5th edition"
+  :publisher "Japan Gastroenterological Association"
+  :url :unverified
+  :note "verify official URL before any citation; record quote and retrieved date"}]
